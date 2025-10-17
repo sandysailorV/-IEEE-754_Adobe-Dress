@@ -28,6 +28,18 @@ float ieee_754(uint32_t const data) {
     uint32_t const exponent_bits = (data >> mantissa_width) & ((1u << exp_width) - 1u);
     uint32_t const fraction_bits =  data & ((1u << mantissa_width) - 1u);
 
+
+    // Zero exponent
+    if (exponent_bits == 0u) {
+        return (sign_bit == 1u) ? -0.0f : 0.0f; 
+    }
+
+    // subnormal: value = (fraction / 2^23) * 2^(1 - bias)
+    float const frac_divisor = static_cast<float>(1u << mantissa_width); // 2^23
+    float const fraction     = static_cast<float>(fraction_bits) / frac_divisor;
+    float       value        = std::ldexp(fraction, 1 - static_cast<int>(bias));
+    return (sign_bit == 1u) ? -value : value;
+    
     // converts the bits into a small fraction
     float frac_divisor = 8388608.0f; // that’s just 2^23
     float fraction = static_cast<float>(fraction_bits) / frac_divisor;
