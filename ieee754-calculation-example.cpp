@@ -32,6 +32,11 @@ float ieee_754(uint32_t const data) {
     float frac_divisor = 8388608.0f; // that’s just 2^23
     float fraction = static_cast<float>(fraction_bits) / frac_divisor;
     float mantissa = 1.0f + fraction; // add the hidden “1” 
+    int exponent = static_cast<int>(exponent_bits) - static_cast<int>(bias);
+
+    float value = std::ldexp(mantissa, exponent);
+    if (sign_bit == 1u) value = -value;
+    return value;
 
 }
 
