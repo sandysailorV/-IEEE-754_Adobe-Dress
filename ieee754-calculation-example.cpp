@@ -30,8 +30,10 @@ float ieee_754(uint32_t const data) {
 
 
     // Zero exponent
-    if (exponent_bits == 0u) {
-        return (sign_bit == 1u) ? -0.0f : 0.0f; 
+    if (exponent_bits == 0u) {          // means exp bits are all zeros
+        if (fraction_bits == 0u) {      // AND frac bits are all zeros
+            return (sign_bit == 1u) ? -0.0f : 0.0f; // ±0
+        }
     }
 
     // subnormal: value = (fraction / 2^23) * 2^(1 - bias)
