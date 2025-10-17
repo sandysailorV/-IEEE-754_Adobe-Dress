@@ -23,9 +23,17 @@ uint8_t const bias = 127U;
 
 // keep only ONE definition of this function
 float ieee_754(uint32_t const data) {
+    //Extract from the 32 bit pattern based on global vars
+    uint32_t const sign_bit      = (data >> (width - 1)) & 1u;
+    uint32_t const exponent_bits = (data >> mantissa_width) & ((1u << exp_width) - 1u);
+    uint32_t const fraction_bits =  data & ((1u << mantissa_width) - 1u);
     float value;
+
     value = 1.23;
     return value;
+
+    
+
 }
 
 void header() {
