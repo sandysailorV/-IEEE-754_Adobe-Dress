@@ -27,12 +27,11 @@ float ieee_754(uint32_t const data) {
     uint32_t const sign_bit      = (data >> (width - 1)) & 1u;
     uint32_t const exponent_bits = (data >> mantissa_width) & ((1u << exp_width) - 1u);
     uint32_t const fraction_bits =  data & ((1u << mantissa_width) - 1u);
-    float value;
 
-    value = 1.23;
-    return value;
-
-    
+    // converts the bits into a small fraction
+    float frac_divisor = 8388608.0f; // that’s just 2^23
+    float fraction = static_cast<float>(fraction_bits) / frac_divisor;
+    float mantissa = 1.0f + fraction; // add the hidden “1” 
 
 }
 
